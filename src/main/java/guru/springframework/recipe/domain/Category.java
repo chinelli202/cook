@@ -23,6 +23,7 @@ public class Category {
     private Set<Recipe> recipes = new HashSet<>();
 
     public Long getId() {
+    	// freak
     	//and this is a comment
         return id;
     }
