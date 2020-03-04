@@ -94,7 +94,7 @@ public class ImageControllerTest {
 		recipe.setImage(imageData);
 		
 		//when
-		//when(recipeService.findById(anyLong()))
+		when(recipeService.findById(anyLong())).thenReturn(recipe);
 		
 		//then
 		MockHttpServletResponse response = mockMvc.perform(get("/recipe/1/recipeimage"))
