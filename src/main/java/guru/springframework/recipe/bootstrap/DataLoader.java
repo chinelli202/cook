@@ -1,7 +1,9 @@
 package guru.springframework.recipe.bootstrap;
 
+import guru.springframework.recipe.domain.Category;
 import guru.springframework.recipe.domain.Difficulty;
 import guru.springframework.recipe.domain.Ingredient;
+import guru.springframework.recipe.domain.Notes;
 import guru.springframework.recipe.domain.Recipe;
 import guru.springframework.recipe.domain.UnitOfMeasure;
 import guru.springframework.recipe.repositories.CategoryRepository;
@@ -58,9 +60,26 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
             throw new RuntimeException("Cant find unit of Measure : Dash");
         }
 
+        
+        //loading categories
+        Optional<Category> american = categoryRepository.findByDescription("American");
+        
+        if(!american.isPresent()) {
+        	throw new RuntimeException("Can't find category : American");
+        }
+        
+        Optional<Category> mexican = categoryRepository.findByDescription("Mexican");
+        
+        if(!mexican.isPresent()) {
+        	throw new RuntimeException("Can't find category : Mexican");
+        }
+        
+        guacamole.setDescription("How to Make Perfect Guacamole");
         guacamole.setCookTime(0);
         guacamole.setPrepTime(600);
         guacamole.setServings(4);
+        guacamole.setSource("Simple Recipes");
+        guacamole.setDifficulty(Difficulty.MEDIUM);
         guacamole.setDirections("Making Guacamole is easy\n" +
                 "\n" +
                 "All you really need to make guacamole is ripe avocados and salt. After that, a little lime or lemon juice—a splash of acidity—will help to balance the richness of the avocado. Then if you want, add chopped cilantro, chiles, onion, and/or tomato.\n" +
@@ -73,6 +92,10 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
                 "Check for ripeness by gently pressing the outside of the avocado. If there is no give, the avocado is not ripe yet and will not taste good. If there is a little give, the avocado is ripe. If there is a lot of give, the avocado may be past ripe and not good. In this case, taste test first before using.");
 
 
+        guacamole.setNotes(new Notes("Guacamole! Did you know that over 2 billion pounds of avocados are consumed each year in the U.S.? (Google it.) That’s over 7 pounds per person. I’m guessing that most of those avocados go into what has become America’s favorite dip, guacamole.\r\n" + 
+        		"Where Does Guacamole Come From?\r\n" + 
+        		"\r\n" + 
+        		"The word “guacamole”, and the dip, are both originally from Mexico, where avocados have been cultivated for thousands of years. The name is derived from two Aztec Nahuatl words—ahuacatl (avocado) and molli (sauce)."));
         // ingredients
         // create, set description, set amount
         // find unitofmeasure in the database and attach it to ingredient
@@ -109,6 +132,10 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         guacamole.addIngredient(limeJuice);
         guacamole.addIngredient(redOnion);
         guacamole.addIngredient(blackPepper);
+        
+        //setting categories
+        guacamole.getCategories().add(american.get());
+        guacamole.getCategories().add(mexican.get());
 
         //preparing the spicy grilled chicken tacos
 
@@ -118,10 +145,24 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         Ingredient oregano = new Ingredient("dried oregano",new BigDecimal(1),teaspoon.get());
         Ingredient cumin = new Ingredient("dried cumin",new BigDecimal(1),tablespoon.get());
 
+        grilledct.setDirections("1 Prepare a gas or charcoal grill for medium-high, direct heat.\r\n" + 
+        		"\r\n" + 
+        		"2 Make the marinade and coat the chicken: In a large bowl, stir together the chili powder, oregano, cumin, sugar, salt, garlic and orange zest. Stir in the orange juice and olive oil to make a loose paste. Add the chicken to the bowl and toss to coat all over.\r\n" + 
+        		"\r\n" + 
+        		"Set aside to marinate while the grill heats and you prepare the rest of the toppings.");
+        
+        grilledct.setNotes(new Notes("The ancho chiles I use in the marinade are named for their wide shape. They are large, have a deep reddish brown color when dried, and are mild in flavor with just a hint of heat. You can find ancho chile powder at any markets that sell Mexican ingredients, or online.\r\n" + 
+        		"\r\n" + 
+        		"I like to put all the toppings in little bowls on a big platter at the center of the table: avocados, radishes, tomatoes, red onions, wedges of lime, and a sour cream sauce. I add arugula, as well – this green isn’t traditional for tacos, but we always seem to have some in the fridge and I think it adds a nice green crunch to the tacos.\r\n" + 
+        		"\r\n" + 
+        		"Everyone can grab a warm tortilla from the pile and make their own tacos just they way they like them.\r\n" + 
+        		"\r\n" + 
+        		"You could also easily double or even triple this recipe for a larger party. A taco and a cold beer on a warm day? Now that’s living!"));
+        
         grilledct.addIngredient(ancho);
         grilledct.addIngredient(oregano);
         grilledct.addIngredient(cumin);
-
+        grilledct.getCategories().add(american.get());
         List<Recipe> resultList = new ArrayList<>();
         resultList.add(guacamole);
         resultList.add(grilledct);

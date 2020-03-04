@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,8 +29,9 @@ public class IndexController {
     public String getIndexPage(Model model){
 
         Set<Recipe> recipes = recipeService.findAll();
-
+        System.out.println("recipes size : " + recipes.size());
         model.addAttribute("recipes",recipes);
-        return "index";
+        return "welcome";
+        //unreachable comment
     }
 }

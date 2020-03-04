@@ -49,14 +49,14 @@ public class IndexControllerTest {
 
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("index"));
+                .andExpect(view().name("welcome"));
     }
 
     @Test
     public void getIndexPage() {
 
         //given
-        String expected = "index";
+        String expected = "welcome";
 
         Set<Recipe> recipes = new HashSet<>();
         Recipe recipe = new Recipe();

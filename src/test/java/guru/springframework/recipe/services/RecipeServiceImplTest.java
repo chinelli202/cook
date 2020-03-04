@@ -5,10 +5,13 @@ import guru.springframework.recipe.repositories.RecipeRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
 import org.mockito.MockitoAnnotations;
 import org.mockito.internal.configuration.MockAnnotationProcessor;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -16,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 public class RecipeServiceImplTest {
 
-    private RecipeServiceImpl recipeServiceImpl;
+    private RecipeServiceImpl service;
 
     @Mock
     RecipeRepository recipeRepository;
@@ -25,7 +28,7 @@ public class RecipeServiceImplTest {
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        recipeServiceImpl = new RecipeServiceImpl(recipeRepository);
+        service = new RecipeServiceImpl(recipeRepository);
     }
 
     @Test
@@ -34,7 +37,20 @@ public class RecipeServiceImplTest {
         Set<Recipe> recipes = new HashSet<>();
         recipes.add(new Recipe());
         when(recipeRepository.findAll()).thenReturn(recipes);
-        Set<Recipe> returnedRecipes = recipeServiceImpl.findAll();
+        Set<Recipe> returnedRecipes = service.findAll();
         assertEquals(1, recipes.size());
+    }
+    
+    @Test
+    public void findRecipeById() {
+    	
+    	Recipe specialRec = new Recipe();
+    	specialRec.setId(2L);
+    	
+    	Mockito.when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(specialRec));
+    	Recipe returnRecipe = service.findById(2L);
+    	
+    	verify(recipeRepository).findById(2L);
+    	assertEquals(returnRecipe.getId(), specialRec.getId());
     }
 }

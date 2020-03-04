@@ -6,5 +6,25 @@
 </head>
 <body>
 <h1>My Recipe</h1>
+
+<table class="table table-hover">
+				<thead class="thead-inverse">
+					<tr>
+						<th>ID</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				
+				<tr th:remove="all">
+					<td th:text="${recipe.id}">123</td>
+					<td th:text="${recipe.description}">Tasty Goodness 1</td>
+					<td></td>
+				</tr>
+				<tr th:remove="all">
+					<td th:text="${recipe.id}">123</td>
+					<td th:text="${recipe.description}">Tasty Goodness 1</td>
+					<td></td>
+				</tr>
+			</table>
 </body>
 </html>
